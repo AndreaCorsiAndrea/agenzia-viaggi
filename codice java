@@ -1,0 +1,81 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
+
+class Viaggio {
+    String gruppo;
+    String fase;
+    String orario;
+
+    public Viaggio(String gruppo, String fase) {
+        this.gruppo = gruppo;
+        this.fase = fase;
+        this.orario = getCurrentTime();
+    }
+
+
+    @Override
+    public String toString() {
+        return "Gruppo: " + gruppo + ", Fase: " + fase + ", Orario: " + orario;
+    }
+}
+
+public class CoordinamentoViaggi {
+    private static final String[] gruppi = {"francesi", "tedeschi", "spagnoli"};
+    private static final int NUM_TURISTI = 25;
+    private static final String FILE_PATH = "report_viaggi.txt";
+    private static Viaggio[] viaggiEffettuati = new Viaggio[9];  // 3 gruppi, 3 fasi per gruppo
+
+}
+
+    private static void eseguiViaggio(String gruppo) {
+        // Partenza dall'alloggio
+        registraFase(gruppo, "Partenza dagli alloggi");
+
+        // Arrivo al porto
+        registraFase(gruppo, "Arrivo al porto");
+
+        // Pagamento del biglietto
+        registraFase(gruppo, "Pagamento del biglietto");
+
+        // Imbarco sul traghetto
+        registraFase(gruppo, "Imbarco sul traghetto");
+
+        // Partenza dal porto
+        registraFase(gruppo, "Partenza dal porto");
+
+        // Ritorno al porto del traghetto
+        registraFase(gruppo, "Ritorno al porto");
+    }
+
+    private static void registraFase(String gruppo, String fase) {
+        for (int i = 0; i < viaggiEffettuati.length; i++) {
+            if (viaggiEffettuati[i] == null) {
+                viaggiEffettuati[i] = new Viaggio(gruppo, fase);
+                System.out.println(viaggiEffettuati[i]);
+                break;
+            }
+        }
+    }
+
+    private static void generaReport() {
+        try (FileWriter writer = new FileWriter(FILE_PATH)) {
+            // Scriviamo la data odierna
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            String dataOdierna = sdf.format(new Date());
+            writer.write("Data: " + dataOdierna + "\n\n");
+
+            // Scriviamo i viaggi effettuati
+            for (Viaggio viaggio : viaggiEffettuati) {
+                if (viaggio != null) {
+                    writer.write(viaggio.toString() + "\n");
+                }
+            }
+
+            System.out.println("\nReport generato in " + FILE_PATH);
+
+        } catch (IOException e) {
+            System.out.println("Errore durante la scrittura del file: " + e.getMessage());
+        }
+    }
+
